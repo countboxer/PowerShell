@@ -1,0 +1,49 @@
+* List all installed applications
+	Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object
+		DisplayName, DisplayVersion, Publisher, InstallDate | Format-Table –AutoSize > C:\Users\jczbe6\Downloads\InstalledPrograms-PS.txt
+
+* Get the drive name and path for all mapped drives:
+	Get-WmiObject -Class Win32_MappedLogicalDisk | select name, ProviderName
+
+* Extract a Zip file from the command line:
+	Expand-Archive .\nginx-1.15.3.zip -DestinationPath 'C:\Program Files (x86)'
+
+* Get help on a module:
+	Help <module name> (i.e. Help Update-Module)
+
+* Find  and kill a process by searching the ProcessName field:
+	ps *nginx*
+	kill -Name nginx or kill -Id 16408
+
+* List empty directories:
+	(Get-ChildItem C:\ -Recurse | ? {$_.PSIsContainer -eq $True}) | ? {$_.GetFileSystemInfos().Count -eq 0} | select FullName > empty_dir.txt
+
+* Create a record of all or part of a PowerShell session to a text file:
+	Start-Transcript -path c:\scripts\transcript01.txt
+
+* How can I reload my Windows PowerShell profile to test some changes I made - without closing and reopening Windows PowerShell?
+	Use the invocation operator with the automatic $profile variable: & $profile
+
+* How can I easily get information about the folder and path to the profile for a currently signed-in user?
+	Get-ChildItem Env:
+		This returns all environment variables.
+				As of 2018-10-04:						As of 2018-10-08
+					HOME --> H:\						C:\Users\jczbe6
+					HOMEDRIVE --> H:					C:
+					HOMEPATH --> \						\Users\jczbe6
+					USERPROFILE --> C:\Users\jczbe6		C:\Users\jczbe6
+
+* How can I use Windows PowerShell to display hidden files?
+	Use the Force parameter for Get-Childitem (or the aliases dir, ls or gci): dir -Force -File
+
+* Notes from the Pluralsight course:
+	Get-Service |
+		Where-Object Status -EQ Stopped |
+			Select-Object Status, Name, Displayname |
+				Export-Csv 'C:\Users\jczbe6\stopped-services.csv'
+
+	Get-Service
+		-Name A* |
+			Where-Object Status -EQ Running
+
+	Format-List or Format-Table or Out-Gridview

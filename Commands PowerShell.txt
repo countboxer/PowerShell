@@ -1,0 +1,163 @@
+* Calculate date difference:
+	$start = [datetime] '08/27/2018 8:00'
+	$start.AddDays(21 * 7)
+	$start.AddMonths(5)
+	$end = Get-Date
+	$end - $start
+	$monthdiff = $end.month - $begin.month + (($end.Year - $begin.year) * 12)
+	$monthDiff = $end.month - $start.month + (($end.Year - $start.year) * 12)
+	$Duration = New-TimeSpan -Start '8/27/2018 8:00'
+	$Duration.Days
+	$Duration.Days / (21 * 7)
+	$Duration.Days / 7  # Number of weeks between start and end
+	$Duration.Days / 30 # Number of months between start and end
+	[math]::Round($Duration.Days)
+	[math]::Round($Duration.Days / 7)
+	[math]::Round($Duration.Days / 30)
+	[math]::Floor($Duration.Days / 30)
+	[math]::Ceiling($Duration.Days / 30)
+	[math]::Floor($Duration.Days / 7)
+	[math]::Ceiling($Duration.Days / 7)
+
+* Retrieve PowerShell version information:
+	$PSVersionTable
+	$PSVersionTable.PSVersion
+
+* Retrieve environment information:
+	$HOME
+	$HOST
+	$HOST.PrivateData.DebugBackgroundColor
+	$HOST.PrivateData.DebugForegroundColor
+	$HOST.PrivateData.ErrorBackgroundColor
+	$HOST.PrivateData.ErrorForegroundColor
+	$HOST.PrivateData.WarningForegroundColor
+	$HOST.UI.RawUI.BackgroundColor
+	$HOST.UI.RawUI.ForegroundColor
+	$HOST.UI.RawUI.WindowTitle = "Jeff Belknap"
+	$env:ALLUSERSPROFILE
+	$env:APPDATA
+	$env:HOMEDRIVE
+	$env:HOMEPATH
+	$env:Laptop
+	$env:PATH
+	$env:PATH += ";C:\TDM-GCC-64\bin"
+	$env:PROGRAMDATA
+	$env:USERPROFILE
+	$env:psmodulepath
+	$env:psmodulepath -split ";"
+
+* Get commands:
+	Get-Alias
+	Get-ChildItem Env:JAVA_HOME			<-- List one specific environment variable
+	Get-ChildItem Env:USER*				<-- List environment variables that match a wild card
+	Get-ChildItem env:	<or>	cd env: / (ls path).value.split(";") <-- List all environment variables
+	Get-CimInstance
+	Get-Command -CommandType Cmdlet {Alias | Function | Filter | Cmdlet | ExternalScript | Application | Script | Workflow | Configuration | All }
+	Get-Command -Type Alias
+	Get-Command -Type Cmdlet
+	Get-Command -Verb New
+	Get-Date
+	Get-Help *about*
+	Get-Help Get-Command | more
+	Get-Help Get-Service -Examples
+	Get-Help | more
+	Get-History | Out-File c:\scripts\GetHistory01.txt
+	Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object
+	Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName, DisplayVersion, Publisher, InstallDate | Format-Table –AutoSize > C:\Users\jczbe6\Downloads\InstalledPrograms-PS.txt
+	Get-Location
+	Get-Location -stack
+	Get-Member
+	Get-Module							<-- List imported modules
+	Get-Module -ListAvailable			<-- List available modules
+	Get-Module PowerShellGet -ListAvailable
+	Get-PSReadlineOption | Select *color
+	Get-PSRepository
+	Get-PSSnapin
+	Get-PSSnapin -Registered
+	Get-PackageSource
+	Get-Service
+	Get-Service -Name A*
+	Get-Service -Name A* | Where-Object Status -EQ Running
+	Get-Service -Name A* | Where-Object Status -EQ Stopped
+	Get-Service | Where-Object DisplayName -Like *admin*
+	Get-Service | Where-Object Name -Like *admin*
+	Get-Service | Where-Object Status -eq 'Stopped'
+	Get-Service | Where-Object Status -eq 'Stopped' | export-csv c:\users\jczbe6\stopped-services.csv
+	Get-Service | Where-Object Status -eq 'Stopped' | select-object Status, Name, Displayname
+	Get-Service | Where-Object Status -eq 'Stopped' | select-object Status, Name, Displayname | export-csv 'C:\Users\jczbe6\stopped-services.csv'
+	Get-Verb
+
+* Module commands:
+	Find-Module -Tag sqlserver
+	Import-Module posh-git
+	Install-Module -Name PSReadLine -AllowPrerelease
+	Install-Package Giraffe
+	PowerShellGet\Install-Module posh-git -Scope CurrentUser -AllowPrerelease -Force
+	Uninstall-Module posh-git
+	Update-Help
+	Update-Module -Name "PSReadLine"
+
+* Internal commands:
+	cat notes.txt
+	code-insiders
+	code-insiders --list-extensions --show-versions
+	ls
+	ls -Attributes Hidden
+	mv find-command.ps1 ../Powershell/
+	mv input_test.go input.go
+	notepad
+	notepad notes.txt
+	pop-location
+	ps
+	ps *svchost*
+	ps | Select-String -Pattern 'svchost'
+	ps | more
+	push-location
+	push-location -path $HOME
+	pwd
+	regedit
+
+* Get security information:
+	$admins = ([System.Security.Principal.SecurityIdentifier]'S-1-5-32-544').Translate( [System.Security.Principal.NTAccount]).Value
+	$groupname = $parts[-1]
+	$parts = $admins -split '\\'
+	Get-LocalGroupMember -Group $groupname
+
+* Commands that I don't want to test:
+	(Get-PSReadlineOption).HistorySavePath
+	Expand-Archive .\nginx-1.15.3.zip -DestinationPath 'C:\Program Files (x86)'
+	Set-ExecutionPolicy RemoteSigned
+	Set-PackageSource -Name "PSGallery" -Trusted
+	Test-Path $profile
+	ssh -T git@gitlab.com:countboxer/go.git
+	ssh-keygen -h
+	type %userprofile%\.ssh\id_rsa.pub | clip
+	type id_rsa.pub | clip
+
+* Select / Sort / Group / Where / Measure:
+	Get-Vegetable | Get-Member -MemberType Properties
+	Get-Vegetable | Get-Member -MemberType Method
+
+	Get-Vegetable | Select-Object -Property Name, CookedState
+	Get-Vegetable -RootOnly | Select -First 1
+	Get-Vegetable -RootOnly | Select -First 1 -Property *
+	Get-Vegetable | Select -Unique -ExpandProperty Name
+
+	Get-Vegetable | Sort-Object Count -Descending
+	Get-Vegetable | Select-Object Name, Color, @{Name="ColorValue";Expression={$_.Color.value__}} | sort Color
+	Get-Vegetable | Sort-Object {$_.Color.toString()} -Unique
+
+	Get-Vegetable | Group-Object Color | Sort-Object Count -Descending
+	Get-Vegetable | Group-Object Color | Sort-Object Count -Descending | Select-Object -First 1 -ExpandProperty Group
+	Get-Vegetable | Group-Object CookedState -NoElement
+
+	Get-Vegetable | Where-Object -Property Color -eq Yellow
+	Get-Vegetable | Where-Object {$_.Color -eq 'Yellow'}
+	Get-Vegetable | Where-Object {$_Count -gt 10 -and $_.Color -eq 'Yellow'} | Sort-Object Count -Descending
+	Get-Vegetable | Where-Object {-Not ($_.IsRoot)} | Select-Object Name, IsRoot
+
+	Get-Vegetable -RootOnly | Measure-Object -Property Count -Sum
+	Get-Process | Measure-Object WorkingSet, PeakWorkingSet -Sum -Average
+
+	Get-EventLog -LogName System -Newest 10 -EntryType Error | Out-GridView
+	-PassThru
